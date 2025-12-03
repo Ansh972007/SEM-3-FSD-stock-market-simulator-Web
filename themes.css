@@ -1,0 +1,165 @@
+/* ===== Theme Variables ===== */
+:root {
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --card-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --gradient-danger: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+[data-theme="dark"] {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --border-color: #333333;
+    --card-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    --gradient-primary: linear-gradient(135deg, #434343 0%, #000000 100%);
+    --gradient-success: linear-gradient(135deg, #0f5132 0%, #198754 100%);
+    --gradient-danger: linear-gradient(135deg, #842029 0%, #dc3545 100%);
+}
+
+[data-theme="neon"] {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a2e;
+    --text-primary: #00ffff;
+    --text-secondary: #00d4ff;
+    --border-color: #16213e;
+    --card-shadow: 0 3px 20px rgba(0,255,255,0.3);
+    --gradient-primary: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%);
+    --gradient-success: linear-gradient(135deg, #00ff00 0%, #00ffff 100%);
+    --gradient-danger: linear-gradient(135deg, #ff00ff 0%, #ff0000 100%);
+}
+
+/* ===== Theme Application ===== */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card, .stock-card, .feature-card, .dashboard-card {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s;
+}
+
+.navbar-dark {
+    background-color: var(--bg-secondary) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table {
+    color: var(--text-primary);
+}
+
+.table-dark {
+    background-color: var(--bg-secondary) !important;
+}
+
+.form-control, .form-select {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.modal-header, .modal-footer {
+    border-color: var(--border-color);
+}
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* ===== Neon Theme Specific Styles ===== */
+[data-theme="neon"] .stock-card {
+    border: 1px solid rgba(0,255,255,0.3);
+    box-shadow: 0 0 20px rgba(0,255,255,0.2);
+}
+
+[data-theme="neon"] .stock-card:hover {
+    box-shadow: 0 0 30px rgba(0,255,255,0.4);
+    border-color: rgba(0,255,255,0.6);
+}
+
+[data-theme="neon"] .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    box-shadow: 0 0 15px rgba(0,255,255,0.5);
+}
+
+[data-theme="neon"] .btn-success {
+    background: var(--gradient-success);
+    border: none;
+    box-shadow: 0 0 15px rgba(0,255,0,0.5);
+}
+
+[data-theme="neon"] .btn-danger {
+    background: var(--gradient-danger);
+    border: none;
+    box-shadow: 0 0 15px rgba(255,0,255,0.5);
+}
+
+[data-theme="neon"] .text-success {
+    color: #00ff00 !important;
+    text-shadow: 0 0 10px rgba(0,255,0,0.5);
+}
+
+[data-theme="neon"] .text-danger {
+    color: #ff00ff !important;
+    text-shadow: 0 0 10px rgba(255,0,255,0.5);
+}
+
+/* ===== Dark Theme Specific ===== */
+[data-theme="dark"] .hero-section {
+    background: var(--gradient-primary);
+}
+
+[data-theme="dark"] .dashboard-header {
+    background: var(--gradient-primary);
+}
+
+/* ===== Auto Theme Based on Time ===== */
+@media (prefers-color-scheme: dark) {
+    /* System preference can be used as fallback */
+}
+

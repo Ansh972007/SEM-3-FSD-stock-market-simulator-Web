@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Stock Market Simulator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-graph-up-arrow"></i> StockSim
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="market.html">Market</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="portfolio.html">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="trade-history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold mb-4 animate-fade-in">
+                        Virtual Stock Market Simulator
+                    </h1>
+                    <p class="lead mb-4 animate-fade-in-delay">
+                        Experience real-time trading without the risk. Practice buying, selling, and managing your portfolio with our interactive stock market simulator.
+                    </p>
+                    <div class="d-flex gap-3 animate-fade-in-delay-2">
+                        <a href="market.html" class="btn btn-primary btn-lg">
+                            <i class="bi bi-graph-up"></i> Start Trading
+                        </a>
+                        <a href="portfolio.html" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-wallet2"></i> View Portfolio
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image animate-slide-in">
+                        <div class="stock-card-preview">
+                            <div class="stock-item">
+                                <div class="stock-header">
+                                    <span class="stock-name">AAPL</span>
+                                    <span class="stock-price positive">$175.23</span>
+                                </div>
+                                <div class="stock-change positive">+2.45%</div>
+                            </div>
+                            <div class="stock-item">
+                                <div class="stock-header">
+                                    <span class="stock-name">TSLA</span>
+                                    <span class="stock-price negative">$248.50</span>
+                                </div>
+                                <div class="stock-change negative">-1.23%</div>
+                            </div>
+                            <div class="stock-item">
+                                <div class="stock-header">
+                                    <span class="stock-name">MSFT</span>
+                                    <span class="stock-price positive">$378.90</span>
+                                </div>
+                                <div class="stock-change positive">+0.89%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Stocks Carousel -->
+    <section class="trending-section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Trending Stocks</h2>
+            <div id="trendingCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="trendingCarouselInner">
+                    <!-- Carousel items will be dynamically inserted -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#trendingCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#trendingCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Key Features</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h4>Real-Time Simulation</h4>
+                        <p>Watch stock prices update every 3 seconds with realistic market movements and animations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                        <h4>Portfolio Tracking</h4>
+                        <p>Monitor your investments with detailed portfolio analytics and profit/loss calculations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h4>Risk-Free Trading</h4>
+                        <p>Practice trading strategies without real money. Perfect for learning and experimentation.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-robot"></i>
+                        </div>
+                        <h4>AI Predictions</h4>
+                        <p>Get AI-powered stock predictions and market insights to make informed trading decisions.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+                        <h4>Multiple Themes</h4>
+                        <p>Choose from Light, Dark, or Neon themes with auto-theme switching based on time of day.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-bar-chart"></i>
+                        </div>
+                        <h4>Advanced Analytics</h4>
+                        <p>Compare stocks, view heat maps, and analyze trends with comprehensive charts and graphs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market News Ticker -->
+    <section class="news-ticker-section bg-dark text-white py-3">
+        <div class="container">
+            <div class="news-ticker">
+                <span class="ticker-label"><i class="bi bi-newspaper"></i> Market News:</span>
+                <div class="ticker-content">
+                    <span>Tech stocks surge as AI investments grow</span>
+                    <span>•</span>
+                    <span>Federal Reserve maintains interest rates</span>
+                    <span>•</span>
+                    <span>Energy sector shows strong quarterly results</span>
+                    <span>•</span>
+                    <span>Cryptocurrency market experiences volatility</span>
+                    <span>•</span>
+                    <span>Automotive industry shifts to electric vehicles</span>
+                    <span>•</span>
+                    <span>Pharmaceutical companies announce breakthrough treatments</span>
+                    <span>•</span>
+                    <span>Banking sector reports strong quarterly earnings</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market News Cards -->
+    <section class="news-cards-section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Market News</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-graph-up text-success"></i> Tech Sector Rally
+                            </h5>
+                            <p class="card-text">
+                                Technology stocks continue their upward trend as AI and cloud computing investments reach record highs. Major tech companies report strong quarterly earnings.
+                            </p>
+                            <small class="text-muted">2 hours ago</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-lightning-charge text-warning"></i> Energy Market Update
+                            </h5>
+                            <p class="card-text">
+                                Energy sector shows mixed signals with oil prices stabilizing while renewable energy stocks gain momentum. Investors watch for policy changes.
+                            </p>
+                            <small class="text-muted">5 hours ago</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-bank text-primary"></i> Banking Sector News
+                            </h5>
+                            <p class="card-text">
+                                Major banks report strong quarterly results with increased lending activity. Financial sector remains stable despite market volatility.
+                            </p>
+                            <small class="text-muted">1 day ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 StockSim - Virtual Stock Market Simulator. Educational Purpose Only.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            StorageManager.init();
+            loadTrendingStocks();
+        });
+
+        function loadTrendingStocks() {
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            
+            // Get top 6 stocks by change percentage
+            const stocksWithChanges = StockData.map(stock => {
+                const data = priceData[stock.symbol] || {
+                    price: stock.basePrice,
+                    changePercent: (Math.random() - 0.5) * 4
+                };
+                return { ...stock, ...data };
+            }).sort((a, b) => Math.abs(b.changePercent) - Math.abs(a.changePercent)).slice(0, 6);
+
+            const carouselInner = document.getElementById('trendingCarouselInner');
+            if (!carouselInner) return;
+
+            carouselInner.innerHTML = stocksWithChanges.map((stock, index) => {
+                const isPositive = stock.changePercent >= 0;
+                return `
+                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                        <div class="row g-3 justify-content-center">
+                            ${stocksWithChanges.slice(index, index + 3).map(s => {
+                                const pos = s.changePercent >= 0;
+                                return `
+                                    <div class="col-md-4">
+                                        <div class="card text-center h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${s.symbol}</h5>
+                                                <p class="text-muted mb-2">${s.name}</p>
+                                                <div class="h4 mb-2 ${pos ? 'text-success' : 'text-danger'}">
+                                                    ${Utils.formatCurrency(s.price)}
+                                                </div>
+                                                <div class="badge bg-${pos ? 'success' : 'danger'}">
+                                                    ${Utils.formatPercent(s.changePercent)}
+                                                </div>
+                                                <div class="mt-3">
+                                                    <a href="stock-details.html?symbol=${s.symbol}" class="btn btn-primary btn-sm">
+                                                        View Details
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
+

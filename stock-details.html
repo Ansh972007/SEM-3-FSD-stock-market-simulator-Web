@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Details - StockSim</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-graph-up-arrow"></i> StockSim
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="market.html">Market</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="portfolio.html">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="watchlist.html">Watchlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="trade-history.html">History</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Stock Details Header -->
+    <div class="dashboard-header">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 id="stockSymbol" class="mb-2">Loading...</h2>
+                    <p id="stockName" class="mb-0">Loading...</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-warning" id="watchlistBtn" onclick="toggleWatchlist()">
+                        <i class="bi bi-star"></i> Add to Watchlist
+                    </button>
+                    <a href="market.html" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Market
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+        <!-- Price and Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted mb-2">Current Price</div>
+                        <div class="h3 mb-0" id="currentPrice">$0.00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted mb-2">Day Change</div>
+                        <div class="h3 mb-0" id="dayChange">+0.00%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted mb-2">Volume</div>
+                        <div class="h3 mb-0" id="volume">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="text-muted mb-2">Category</div>
+                        <div class="h3 mb-0" id="category">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Chart and Prediction -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Price Trend (Last 24 Hours)</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="priceChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-robot"></i> AI Prediction
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="predictionContent">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Info and Trading -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Company Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <p id="companyDescription">Loading...</p>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Symbol:</strong><br>
+                                <span id="infoSymbol">-</span>
+                            </div>
+                            <div class="col-6">
+                                <strong>Base Price:</strong><br>
+                                <span id="infoBasePrice">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Trading Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="holdingInfo" class="mb-3">
+                            <p class="text-muted">You don't own any shares of this stock.</p>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-lg" onclick="openBuyModal()">
+                                <i class="bi bi-arrow-down-circle"></i> Buy Stock
+                            </button>
+                            <button class="btn btn-danger btn-lg" id="sellBtn" onclick="openSellModal()" disabled>
+                                <i class="bi bi-arrow-up-circle"></i> Sell Stock
+                            </button>
+                            <a href="compare.html?symbol1=__SYMBOL__" class="btn btn-info" id="compareBtn">
+                                <i class="bi bi-bar-chart"></i> Compare with Another Stock
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Modal (same as market.html) -->
+    <div class="modal fade" id="buyStockModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Buy Stock</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="buyStockForm">
+                        <input type="hidden" id="buyStockSymbol">
+                        <div class="mb-3">
+                            <label class="form-label">Stock</label>
+                            <input type="text" class="form-control" id="buyStockName" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Current Price</label>
+                            <input type="text" class="form-control" id="buyStockPrice" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="buyStockQuantity" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Total Amount</label>
+                            <input type="text" class="form-control fw-bold" id="buyTotalAmount" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="handleBuyStock()">Buy Stock</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/prediction.js"></script>
+    <script>
+        let currentStock = null;
+        let priceHistory = [];
+        let chartContext = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            StorageManager.init();
+            
+            // Get symbol from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const symbol = urlParams.get('symbol');
+            
+            if (!symbol) {
+                window.location.href = 'market.html';
+                return;
+            }
+
+            loadStockDetails(symbol);
+            setupChart();
+            setInterval(() => {
+                updateStockPrice();
+                updateChart();
+            }, 3000);
+        });
+
+        function loadStockDetails(symbol) {
+            currentStock = StockData.find(s => s.symbol === symbol);
+            if (!currentStock) {
+                window.location.href = 'market.html';
+                return;
+            }
+
+            // Update UI
+            document.getElementById('stockSymbol').textContent = currentStock.symbol;
+            document.getElementById('stockName').textContent = currentStock.name;
+            document.getElementById('category').textContent = currentStock.category;
+            document.getElementById('volume').textContent = `${(currentStock.volume / 1000000).toFixed(1)}M`;
+            document.getElementById('companyDescription').textContent = currentStock.description;
+            document.getElementById('infoSymbol').textContent = currentStock.symbol;
+            document.getElementById('infoBasePrice').textContent = Utils.formatCurrency(currentStock.basePrice);
+            document.getElementById('compareBtn').href = `compare.html?symbol1=${symbol}`;
+
+            // Update watchlist button
+            const isInWatchlist = StorageManager.isInWatchlist(symbol);
+            const watchlistBtn = document.getElementById('watchlistBtn');
+            watchlistBtn.innerHTML = isInWatchlist 
+                ? '<i class="bi bi-star-fill"></i> Remove from Watchlist'
+                : '<i class="bi bi-star"></i> Add to Watchlist';
+            watchlistBtn.className = isInWatchlist ? 'btn btn-warning active' : 'btn btn-warning';
+
+            // Update holding info
+            updateHoldingInfo();
+
+            // Initialize price history
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            const currentPrice = priceData[symbol]?.price || currentStock.basePrice;
+            for (let i = 0; i < 24; i++) {
+                priceHistory.push({
+                    time: i,
+                    price: currentPrice * (1 + (Math.random() - 0.5) * 0.02)
+                });
+            }
+
+            updateStockPrice();
+            updateChart();
+            PredictionManager.generatePrediction(currentStock);
+        }
+
+        function updateStockPrice() {
+            if (!currentStock) return;
+
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            const data = priceData[currentStock.symbol] || {
+                price: currentStock.basePrice,
+                change: 0,
+                changePercent: 0
+            };
+
+            document.getElementById('currentPrice').textContent = Utils.formatCurrency(data.price);
+            document.getElementById('currentPrice').className = `h3 mb-0 ${data.changePercent >= 0 ? 'text-success' : 'text-danger'}`;
+            
+            const changeText = `${data.changePercent >= 0 ? '+' : ''}${Utils.formatPercent(data.changePercent)}`;
+            document.getElementById('dayChange').textContent = changeText;
+            document.getElementById('dayChange').className = `h3 mb-0 ${data.changePercent >= 0 ? 'text-success' : 'text-danger'}`;
+
+            // Add to price history
+            priceHistory.push({
+                time: priceHistory.length,
+                price: data.price
+            });
+            if (priceHistory.length > 50) {
+                priceHistory.shift();
+            }
+        }
+
+        function setupChart() {
+            const canvas = document.getElementById('priceChart');
+            if (!canvas) return;
+
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 300;
+            chartContext = canvas.getContext('2d');
+        }
+
+        function updateChart() {
+            if (!chartContext || priceHistory.length === 0) return;
+
+            const canvas = document.getElementById('priceChart');
+            const ctx = chartContext;
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+
+            if (priceHistory.length < 2) return;
+
+            // Find min/max prices
+            const prices = priceHistory.map(p => p.price);
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+            const priceRange = maxPrice - minPrice || 1;
+
+            // Draw grid
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (height - 2 * padding) * (i / 5);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
+            }
+
+            // Draw price line
+            ctx.strokeStyle = '#0d6efd';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+
+            const stepX = (width - 2 * padding) / (priceHistory.length - 1);
+            priceHistory.forEach((point, index) => {
+                const x = padding + index * stepX;
+                const y = height - padding - ((point.price - minPrice) / priceRange) * (height - 2 * padding);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Draw points
+            ctx.fillStyle = '#0d6efd';
+            priceHistory.forEach((point, index) => {
+                const x = padding + index * stepX;
+                const y = height - padding - ((point.price - minPrice) / priceRange) * (height - 2 * padding);
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+
+            // Draw labels
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(Utils.formatCurrency(minPrice), padding / 2, height - padding);
+            ctx.fillText(Utils.formatCurrency(maxPrice), padding / 2, padding);
+        }
+
+        function updateHoldingInfo() {
+            if (!currentStock) return;
+
+            const holding = StorageManager.getStockHolding(currentStock.symbol);
+            const holdingInfo = document.getElementById('holdingInfo');
+            const sellBtn = document.getElementById('sellBtn');
+
+            if (holding && holding.quantity > 0) {
+                const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+                const currentPrice = priceData[currentStock.symbol]?.price || currentStock.basePrice;
+                const profitLoss = Utils.calculateProfitLoss(currentPrice, holding.avgPrice, holding.quantity);
+                const profitLossPercent = Utils.calculatePercentChange(holding.avgPrice, currentPrice);
+
+                holdingInfo.innerHTML = `
+                    <div class="alert alert-info">
+                        <strong>You own ${holding.quantity} shares</strong><br>
+                        Average Buy Price: ${Utils.formatCurrency(holding.avgPrice)}<br>
+                        Current Value: ${Utils.formatCurrency(currentPrice * holding.quantity)}<br>
+                        Profit/Loss: <span class="${profitLoss >= 0 ? 'text-success' : 'text-danger'}">
+                            ${Utils.formatCurrency(Math.abs(profitLoss))} (${Utils.formatPercent(profitLossPercent)})
+                        </span>
+                    </div>
+                `;
+                sellBtn.disabled = false;
+            } else {
+                holdingInfo.innerHTML = '<p class="text-muted">You don\'t own any shares of this stock.</p>';
+                sellBtn.disabled = true;
+            }
+        }
+
+        function toggleWatchlist() {
+            if (!currentStock) return;
+
+            if (StorageManager.isInWatchlist(currentStock.symbol)) {
+                StorageManager.removeFromWatchlist(currentStock.symbol);
+                NotificationManager.info(`${currentStock.symbol} removed from watchlist`);
+            } else {
+                StorageManager.addToWatchlist(currentStock.symbol);
+                NotificationManager.success(`${currentStock.symbol} added to watchlist`);
+            }
+
+            loadStockDetails(currentStock.symbol);
+        }
+
+        function openBuyModal() {
+            if (!currentStock) return;
+
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            const currentPrice = priceData[currentStock.symbol]?.price || currentStock.basePrice;
+
+            document.getElementById('buyStockSymbol').value = currentStock.symbol;
+            document.getElementById('buyStockName').value = `${currentStock.symbol} - ${currentStock.name}`;
+            document.getElementById('buyStockPrice').value = Utils.formatCurrency(currentPrice);
+            document.getElementById('buyStockQuantity').value = '';
+            document.getElementById('buyTotalAmount').value = Utils.formatCurrency(0);
+
+            document.getElementById('buyStockQuantity').addEventListener('input', function() {
+                const quantity = parseInt(this.value) || 0;
+                const total = currentPrice * quantity;
+                document.getElementById('buyTotalAmount').value = Utils.formatCurrency(total);
+            });
+
+            new bootstrap.Modal(document.getElementById('buyStockModal')).show();
+        }
+
+        function handleBuyStock() {
+            if (!currentStock) return;
+
+            const quantity = parseInt(document.getElementById('buyStockQuantity').value);
+            if (!quantity || quantity <= 0) {
+                NotificationManager.error('Please enter a valid quantity');
+                return;
+            }
+
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            const currentPrice = priceData[currentStock.symbol]?.price || currentStock.basePrice;
+            const total = currentPrice * quantity;
+            const cash = StorageManager.getCash();
+
+            if (total > cash) {
+                NotificationManager.error('Insufficient funds');
+                return;
+            }
+
+            StorageManager.subtractCash(total);
+            StorageManager.addToPortfolio(currentStock.symbol, quantity, currentPrice);
+            StorageManager.addTradeHistory({
+                type: 'buy',
+                symbol: currentStock.symbol,
+                companyName: currentStock.name,
+                quantity: quantity,
+                price: currentPrice,
+                totalAmount: total
+            });
+
+            NotificationManager.success(`Successfully bought ${quantity} ${currentStock.symbol} shares!`);
+            
+            bootstrap.Modal.getInstance(document.getElementById('buyStockModal')).hide();
+            updateHoldingInfo();
+        }
+
+        function openSellModal() {
+            window.location.href = `market.html?sell=${currentStock.symbol}`;
+        }
+
+        window.addEventListener('resize', () => {
+            setupChart();
+            updateChart();
+        });
+    </script>
+</body>
+</html>
+

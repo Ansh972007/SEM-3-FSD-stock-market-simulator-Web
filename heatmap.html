@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Heat Map - StockSim</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <style>
+        .heat-map-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+
+        .heat-map-item {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .heat-map-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .heat-map-item.positive {
+            background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+        }
+
+        .heat-map-item.negative {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        }
+
+        .heat-map-item.neutral {
+            background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+        }
+
+        .heat-map-symbol {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .heat-map-price {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .heat-map-change {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-graph-up-arrow"></i> StockSim
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="market.html">Market</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="portfolio.html">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="heatmap.html">Heat Map</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Heat Map Header -->
+    <div class="dashboard-header">
+        <div class="container py-4">
+            <h2 class="mb-4">
+                <i class="bi bi-grid-3x3-gap"></i> Stock Market Heat Map
+            </h2>
+            <p class="mb-0">Visual representation of market performance. Green = Rising, Red = Falling</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+        <!-- Filter -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <select class="form-select" id="heatmapCategoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Tech">Technology</option>
+                    <option value="Auto">Automotive</option>
+                    <option value="Bank">Banking</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Pharma">Pharmaceutical</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Consumer">Consumer</option>
+                    <option value="Media">Media</option>
+                    <option value="Energy">Energy</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group w-100" role="group">
+                    <input type="radio" class="btn-check" name="heatmapFilter" id="heatmapAll" checked>
+                    <label class="btn btn-outline-primary" for="heatmapAll">All</label>
+                    
+                    <input type="radio" class="btn-check" name="heatmapFilter" id="heatmapGainers">
+                    <label class="btn btn-outline-success" for="heatmapGainers">Gainers</label>
+                    
+                    <input type="radio" class="btn-check" name="heatmapFilter" id="heatmapLosers">
+                    <label class="btn btn-outline-danger" for="heatmapLosers">Losers</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heat Map -->
+        <div class="card">
+            <div class="card-body">
+                <div class="heat-map-container" id="heatMapContainer">
+                    <!-- Heat map items will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5>Legend</h5>
+                <div class="d-flex gap-4">
+                    <div>
+                        <span class="badge bg-success p-2">Green</span>
+                        <span class="ms-2">Rising stocks (positive change)</span>
+                    </div>
+                    <div>
+                        <span class="badge bg-danger p-2">Red</span>
+                        <span class="ms-2">Falling stocks (negative change)</span>
+                    </div>
+                    <div>
+                        <span class="badge bg-secondary p-2">Gray</span>
+                        <span class="ms-2">Neutral stocks (minimal change)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/theme.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            StorageManager.init();
+            loadHeatMap();
+            setInterval(loadHeatMap, 3000); // Update every 3 seconds
+
+            document.getElementById('heatmapCategoryFilter').addEventListener('change', loadHeatMap);
+            document.getElementById('heatmapAll').addEventListener('change', loadHeatMap);
+            document.getElementById('heatmapGainers').addEventListener('change', loadHeatMap);
+            document.getElementById('heatmapLosers').addEventListener('change', loadHeatMap);
+        });
+
+        function loadHeatMap() {
+            const priceData = JSON.parse(localStorage.getItem('stockPrices') || '{}');
+            const category = document.getElementById('heatmapCategoryFilter').value;
+            const filterGainers = document.getElementById('heatmapGainers').checked;
+            const filterLosers = document.getElementById('heatmapLosers').checked;
+
+            let stocksToShow = StockData;
+
+            // Category filter
+            if (category) {
+                stocksToShow = stocksToShow.filter(s => s.category === category);
+            }
+
+            // Change filter
+            if (filterGainers) {
+                stocksToShow = stocksToShow.filter(s => {
+                    const data = priceData[s.symbol] || { changePercent: 0 };
+                    return data.changePercent > 0;
+                });
+            } else if (filterLosers) {
+                stocksToShow = stocksToShow.filter(s => {
+                    const data = priceData[s.symbol] || { changePercent: 0 };
+                    return data.changePercent < 0;
+                });
+            }
+
+            const container = document.getElementById('heatMapContainer');
+            container.innerHTML = stocksToShow.map(stock => {
+                const data = priceData[stock.symbol] || {
+                    price: stock.basePrice,
+                    changePercent: 0
+                };
+
+                const isPositive = data.changePercent > 0.5;
+                const isNegative = data.changePercent < -0.5;
+                const heatClass = isPositive ? 'positive' : isNegative ? 'negative' : 'neutral';
+
+                return `
+                    <div class="heat-map-item ${heatClass}" onclick="window.location.href='stock-details.html?symbol=${stock.symbol}'">
+                        <div class="heat-map-symbol">${stock.symbol}</div>
+                        <div class="heat-map-price">${Utils.formatCurrency(data.price)}</div>
+                        <div class="heat-map-change">
+                            ${Utils.formatPercent(data.changePercent)}
+                        </div>
+                        <small style="opacity: 0.8; margin-top: 0.5rem;">${stock.category}</small>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>
+
