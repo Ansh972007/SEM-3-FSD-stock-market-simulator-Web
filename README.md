@@ -1,5 +1,5 @@
 
-# 📈 Stock Market Simulation Web App  :
+# 📈 Stock Market Simulation Web  :
 
 A **Full-Stack Development (FSD)** project that simulates real stock-market features like watchlist, trading, portfolio, predictions, heatmaps, and more — built using **HTML, CSS, JavaScript**.
 
